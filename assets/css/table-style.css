@@ -2,91 +2,229 @@
  * Newbook Twin Optomiser Table Styles
  */
 
+/* Container */
 .ntot-table-container {
     margin: 20px 0;
     padding: 20px;
     background: #fff;
     border: 1px solid #ddd;
     border-radius: 4px;
+    max-width: 100%;
+}
+
+/* Header */
+.ntot-table-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 15px;
 }
 
 .ntot-table-header h3 {
-    margin: 0 0 20px 0;
+    margin: 0;
     padding: 0;
     font-size: 24px;
     color: #333;
 }
 
-.ntot-table-content {
-    overflow-x: auto;
+/* Date Picker */
+.ntot-date-picker-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
-.ntot-data-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 20px;
-}
-
-.ntot-data-table thead {
-    background: #f5f5f5;
-}
-
-.ntot-data-table th,
-.ntot-data-table td {
-    padding: 12px 15px;
-    text-align: left;
-    border-bottom: 1px solid #ddd;
-}
-
-.ntot-data-table th {
+.ntot-date-picker-container label {
     font-weight: 600;
     color: #555;
-    text-transform: uppercase;
-    font-size: 12px;
-    letter-spacing: 0.5px;
 }
 
-.ntot-data-table tbody tr:hover {
-    background: #f9f9f9;
-}
-
-.ntot-no-results {
-    padding: 40px 20px;
-    text-align: center;
-    color: #666;
-    font-style: italic;
-}
-
-.ntot-table-footer {
-    display: flex;
-    justify-content: flex-end;
-    padding-top: 10px;
-}
-
-.ntot-refresh-btn {
-    padding: 10px 20px;
-    background: #0073aa;
-    color: #fff;
-    border: none;
+.ntot-date-picker {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
     border-radius: 3px;
-    cursor: pointer;
     font-size: 14px;
-    transition: background 0.3s ease;
+    min-width: 150px;
 }
 
-.ntot-refresh-btn:hover {
-    background: #005177;
+/* Table Wrapper */
+.ntot-table-wrapper {
+    overflow-x: auto;
+    margin-bottom: 10px;
 }
 
-.ntot-refresh-btn:disabled {
-    background: #ccc;
-    cursor: not-allowed;
+/* Booking Grid Table */
+.ntot-booking-grid {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+    min-width: 1200px; /* Ensure table doesn't get too cramped */
 }
 
-/* Loading state */
+/* Headers */
+.ntot-booking-grid thead {
+    background: #2c3e50;
+    color: #fff;
+}
+
+.ntot-room-header {
+    width: 80px;
+    min-width: 80px;
+    text-align: left;
+    padding: 12px 10px;
+    font-weight: 600;
+    font-size: 13px;
+    position: sticky;
+    left: 0;
+    z-index: 10;
+    background: #2c3e50;
+}
+
+.ntot-date-header {
+    text-align: center;
+    padding: 8px 5px;
+    font-weight: 600;
+    font-size: 11px;
+    border-left: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.ntot-date-label {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.ntot-day {
+    font-size: 11px;
+    text-transform: uppercase;
+    opacity: 0.8;
+}
+
+.ntot-date {
+    font-size: 12px;
+    font-weight: 700;
+}
+
+/* Room Cell */
+.ntot-room-cell {
+    background: #ecf0f1;
+    padding: 10px;
+    font-weight: 600;
+    color: #2c3e50;
+    border-right: 2px solid #bdc3c7;
+    position: sticky;
+    left: 0;
+    z-index: 5;
+    font-size: 14px;
+}
+
+/* Booking Cells */
+.ntot-booking-cell {
+    padding: 8px 6px;
+    text-align: center;
+    border: 1px solid #ddd;
+    vertical-align: middle;
+    position: relative;
+    min-height: 50px;
+    cursor: default;
+}
+
+/* Vacant/Empty Cell - Grey */
+.ntot-cell-vacant {
+    background: #E0E0E0;
+}
+
+/* Booked Cell - White/Light */
+.ntot-cell-booked {
+    background: #f8f9fa;
+    border-left: 3px solid #3498db;
+}
+
+/* Twin Cell - Yellow Highlight */
+.ntot-cell-twin {
+    background: #FFD700;
+    border-left: 3px solid #FFA500;
+}
+
+/* Booking Content */
+.ntot-booking-content {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    font-size: 12px;
+    line-height: 1.3;
+}
+
+.ntot-booking-ref {
+    font-weight: 700;
+    color: #2c3e50;
+}
+
+.ntot-cell-twin .ntot-booking-ref {
+    color: #000;
+}
+
+.ntot-bed-type {
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: #666;
+}
+
+.ntot-cell-twin .ntot-bed-type {
+    color: #333;
+}
+
+/* Tooltip */
+.ntot-tooltip {
+    display: none;
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.9);
+    color: #fff;
+    padding: 8px 12px;
+    border-radius: 4px;
+    white-space: nowrap;
+    font-size: 13px;
+    z-index: 1000;
+    margin-bottom: 5px;
+    pointer-events: none;
+}
+
+.ntot-tooltip::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 5px solid transparent;
+    border-top-color: rgba(0, 0, 0, 0.9);
+}
+
+.ntot-booking-cell:hover .ntot-tooltip {
+    display: block;
+}
+
+.ntot-cell-vacant:hover .ntot-tooltip {
+    display: none;
+}
+
+/* Hover Effects */
+.ntot-cell-booked:hover,
+.ntot-cell-twin:hover {
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+    z-index: 2;
+}
+
+/* Loading State */
 .ntot-table-container.loading {
     opacity: 0.6;
     pointer-events: none;
+    position: relative;
 }
 
 .ntot-table-container.loading::after {
@@ -95,20 +233,129 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background: rgba(255, 255, 255, 0.9);
+    background: rgba(255, 255, 255, 0.95);
     padding: 20px 40px;
     border-radius: 4px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+    font-weight: 600;
+    color: #2c3e50;
+    z-index: 100;
 }
 
-/* Responsive */
-@media screen and (max-width: 768px) {
-    .ntot-data-table {
-        font-size: 14px;
+/* No Results */
+.ntot-no-results {
+    padding: 40px 20px;
+    text-align: center;
+    color: #666;
+    font-style: italic;
+}
+
+/* Responsive Design */
+@media screen and (max-width: 1200px) {
+    .ntot-table-container {
+        padding: 15px;
     }
 
-    .ntot-data-table th,
-    .ntot-data-table td {
-        padding: 8px 10px;
+    .ntot-booking-grid {
+        min-width: 1000px;
+    }
+
+    .ntot-room-header,
+    .ntot-room-cell {
+        width: 70px;
+        min-width: 70px;
+        font-size: 12px;
+    }
+
+    .ntot-date-header {
+        font-size: 10px;
+    }
+
+    .ntot-booking-content {
+        font-size: 11px;
+    }
+
+    .ntot-booking-ref {
+        font-size: 11px;
+    }
+
+    .ntot-bed-type {
+        font-size: 9px;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .ntot-table-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .ntot-table-header h3 {
+        font-size: 20px;
+    }
+
+    .ntot-date-picker-container {
+        width: 100%;
+    }
+
+    .ntot-date-picker {
+        flex: 1;
+        min-width: auto;
+    }
+
+    .ntot-booking-grid {
+        min-width: 900px;
+        font-size: 11px;
+    }
+
+    .ntot-room-header,
+    .ntot-room-cell {
+        width: 60px;
+        min-width: 60px;
+        font-size: 11px;
+        padding: 8px 5px;
+    }
+
+    .ntot-booking-cell {
+        padding: 6px 4px;
+        min-height: 45px;
+    }
+
+    .ntot-booking-content {
+        font-size: 10px;
+        gap: 2px;
+    }
+
+    .ntot-booking-ref {
+        font-size: 10px;
+    }
+
+    .ntot-bed-type {
+        font-size: 8px;
+    }
+
+    .ntot-tooltip {
+        font-size: 11px;
+        padding: 6px 10px;
+    }
+}
+
+/* Print Styles */
+@media print {
+    .ntot-date-picker-container {
+        display: none;
+    }
+
+    .ntot-table-container {
+        border: none;
+        box-shadow: none;
+    }
+
+    .ntot-booking-grid {
+        page-break-inside: avoid;
+    }
+
+    .ntot-tooltip {
+        display: none !important;
     }
 }

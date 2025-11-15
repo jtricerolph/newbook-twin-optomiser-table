@@ -9,27 +9,39 @@
      * Initialize the table functionality
      */
     function initTwinOptomiserTable() {
-        const container = $('.ntot-table-container');
+        const datePicker = $('#ntot-start-date');
 
-        if (!container.length) {
+        if (!datePicker.length) {
             return;
         }
 
-        // Refresh button click handler
-        $('.ntot-refresh-btn').on('click', function(e) {
-            e.preventDefault();
-            refreshTableData($(this).closest('.ntot-table-container'));
+        // Date picker change handler
+        datePicker.on('change', function() {
+            const startDate = $(this).val();
+            const days = $(this).data('days') || 14;
+
+            if (startDate) {
+                refreshTable(startDate, days);
+            }
         });
 
-        // Initialize any additional features here
         console.log('Twin Optomiser Table initialized');
     }
 
     /**
-     * Refresh table data via AJAX
+     * Refresh table via AJAX
+     *
+     * @param {string} startDate - Start date in Y-m-d format
+     * @param {number} days - Number of days to display
      */
-    function refreshTableData(container) {
-        const propertyId = container.data('property-id');
+    function refreshTable(startDate, days) {
+        const container = $('.ntot-table-container');
+        const contentDiv = $('#ntot-table-content');
+
+        if (!container.length || !contentDiv.length) {
+            console.error('Table container not found');
+            return;
+        }
 
         // Add loading state
         container.addClass('loading');
@@ -39,23 +51,24 @@
             url: ntotData.ajaxUrl,
             type: 'POST',
             data: {
-                action: 'ntot_refresh_data',
+                action: 'ntot_refresh_table',
                 nonce: ntotData.nonce,
-                property_id: propertyId
+                start_date: startDate,
+                days: days
             },
             success: function(response) {
-                if (response.success) {
+                if (response.success && response.data.html) {
                     // Update table content
-                    container.find('.ntot-table-content').html(response.data.html);
-                    console.log('Table data refreshed successfully');
+                    contentDiv.html(response.data.html);
+                    console.log('Table refreshed successfully');
                 } else {
-                    console.error('Failed to refresh table data:', response.data.message);
-                    alert('Failed to refresh data. Please try again.');
+                    console.error('Failed to refresh table:', response.data?.message || 'Unknown error');
+                    alert('Failed to refresh table. Please try again.');
                 }
             },
             error: function(xhr, status, error) {
                 console.error('AJAX error:', error);
-                alert('An error occurred while refreshing data.');
+                alert('An error occurred while refreshing the table. Please try again.');
             },
             complete: function() {
                 // Remove loading state
