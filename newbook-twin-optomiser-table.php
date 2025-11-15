@@ -313,7 +313,7 @@ class Newbook_Twin_Optomiser_Table {
 
                                     // Get guest name for tooltip
                                     $guest_name = $this->get_guest_name($booking);
-                                    $booking_ref = $booking['booking_reference_id'] ?? $booking['booking_id'] ?? 'N/A';
+                                    $booking_ref = $booking['booking_id'] ?? 'N/A';
 
                                     // Determine cell class
                                     $cell_class = $is_twin ? 'ntot-cell-twin' : 'ntot-cell-booked';
@@ -474,7 +474,16 @@ class Newbook_Twin_Optomiser_Table {
 
         foreach ($custom_fields as $field) {
             if (($field['label'] ?? '') === 'Bed Type') {
-                return $field['value'] ?? 'Unknown';
+                $bed_type = $field['value'] ?? 'Unknown';
+
+                // Abbreviate bed types
+                if (stripos($bed_type, 'twin') !== false || stripos($bed_type, 'two singles') !== false) {
+                    return 'Twin';
+                } elseif (stripos($bed_type, 'double') !== false) {
+                    return 'Double';
+                }
+
+                return $bed_type;
             }
         }
 

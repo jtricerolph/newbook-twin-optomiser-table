@@ -107,6 +107,11 @@
     font-weight: 700;
 }
 
+/* Table Rows - Blue lines between rows */
+.ntot-booking-grid tbody tr {
+    border-bottom: 2px solid #3498db;
+}
+
 /* Room Cell */
 .ntot-room-cell {
     background: #ecf0f1;
