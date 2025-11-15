@@ -391,6 +391,14 @@ class Newbook_Twin_Optomiser_Table {
         }
 
         $bookings_by_room_date = array();
+        $seen_bookings = array(); // Track booking_id + room to avoid duplicates
+
+        if (empty($dates)) {
+            return $bookings_by_room_date;
+        }
+
+        $first_date = $dates[0];
+        $last_date = $dates[count($dates) - 1];
 
         // Fetch bookings for each date
         foreach ($dates as $date) {
@@ -403,16 +411,38 @@ class Newbook_Twin_Optomiser_Table {
             // Organize bookings by room and date
             foreach ($bookings as $booking) {
                 $room_name = $booking['site_name'] ?? '';
+                $booking_id = $booking['booking_id'] ?? '';
 
-                if (empty($room_name) || stripos($room_name, 'overflow') !== false) {
+                if (empty($room_name) || empty($booking_id) || stripos($room_name, 'overflow') !== false) {
                     continue;
                 }
 
-                // Store booking for this room/date combination
-                // Only store if not already set (prevents duplicate entries)
-                if (!isset($bookings_by_room_date[$room_name][$date])) {
-                    $bookings_by_room_date[$room_name][$date] = $booking;
+                // Create unique key for this booking in this room
+                $unique_key = $room_name . '_' . $booking_id;
+
+                // Only process each booking once
+                if (isset($seen_bookings[$unique_key])) {
+                    continue;
                 }
+
+                $seen_bookings[$unique_key] = true;
+
+                // Determine the start date for rendering this booking
+                $arrival_date = date('Y-m-d', strtotime($booking['booking_arrival'] ?? ''));
+
+                // If booking starts before our visible range, use first visible date
+                // Otherwise use the actual arrival date
+                if ($arrival_date < $first_date) {
+                    $start_date = $first_date;
+                } elseif ($arrival_date <= $last_date) {
+                    $start_date = $arrival_date;
+                } else {
+                    // Booking starts after visible range, skip it
+                    continue;
+                }
+
+                // Store booking on its start date
+                $bookings_by_room_date[$room_name][$start_date] = $booking;
             }
         }
 
